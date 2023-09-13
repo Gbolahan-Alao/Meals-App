@@ -11,7 +11,7 @@ const kInitialFilters = {
   Filters.glutenFree: false,
   Filters.lactoseFree: false,
   Filters.vegan: false,
-  Filters.vegetarian: false
+  Filters.vegetarian: false,
 };
 
 class TabScreen extends StatefulWidget {
@@ -120,7 +120,7 @@ class _TabScreenState extends State<TabScreen> {
               icon: Icon(Icons.set_meal),
             ),
             BottomNavigationBarItem(
-              label: 'Your Favorites',
+              label: 'Your Favorites', 
               icon: Icon(Icons.star),
             ),
           ]),
