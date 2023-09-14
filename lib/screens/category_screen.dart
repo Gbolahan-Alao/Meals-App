@@ -5,8 +5,8 @@ import 'package:practice_meals_app/models/meal.dart';
 
 
 class CategoriesScreen extends StatelessWidget {
-  const CategoriesScreen({super.key, required this.onSetFavoriteMeal, required this.filteredMeals});
-  final void Function (Meal meal) onSetFavoriteMeal;
+  const CategoriesScreen({super.key,  required this.filteredMeals});
+  
   final List<Meal> filteredMeals;
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class CategoriesScreen extends StatelessWidget {
               mainAxisSpacing: 20),
           children: [
             for (final category in availableCategories)
-              CategoryItem(category: category, onSetFavoriteMeal: onSetFavoriteMeal ,availableMeals: filteredMeals,)
+              CategoryItem(category: category ,availableMeals: filteredMeals,)
           ]);
   
   }

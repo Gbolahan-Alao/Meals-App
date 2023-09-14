@@ -5,9 +5,9 @@ import 'package:practice_meals_app/screens/meals_screen.dart';
 // import 'package:practice_meals_app/data/dummy_data.dart';
     
 class CategoryItem extends StatelessWidget {
-  const CategoryItem({super.key, required this.category, required this.onSetFavoriteMeal, required this.availableMeals});
+  const CategoryItem({super.key, required this.category,  required this.availableMeals});
   final Category category;
-  final void Function (Meal meal) onSetFavoriteMeal;
+  
   final List<Meal> availableMeals;
 
   @override
@@ -20,7 +20,7 @@ class CategoryItem extends StatelessWidget {
           context,
           MaterialPageRoute(
               builder: (ctx) => MealsScreen(meals: filteredMeals,
-                    title: category.title, onSetFavorites: onSetFavoriteMeal,
+                    title: category.title,
                   )));
     }
 

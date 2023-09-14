@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:practice_meals_app/data/dummy_data.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:practice_meals_app/screens/category_screen.dart';
 import 'package:practice_meals_app/screens/filters_sreen.dart';
 import 'package:practice_meals_app/screens/meals_screen.dart';
 // import 'package:practice_meals_app/models/category.dart';
-import 'package:practice_meals_app/models/meal.dart';
+
 import 'package:practice_meals_app/widgets/main_drawer.dart';
+import 'package:practice_meals_app/providers/meals_provider.dart';
+import 'package:practice_meals_app/providers/favorite_meals_provider.dart';
 
 const kInitialFilters = {
   Filters.glutenFree: false,
@@ -14,45 +17,19 @@ const kInitialFilters = {
   Filters.vegetarian: false,
 };
 
-class TabScreen extends StatefulWidget {
+class TabScreen extends ConsumerStatefulWidget {
   const TabScreen({
     super.key,
   });
 
   @override
-  State<TabScreen> createState() {
+  ConsumerState<TabScreen> createState() {
     return _TabScreenState();
   }
 }
 
-class _TabScreenState extends State<TabScreen> {
+class _TabScreenState extends ConsumerState<TabScreen> {
   Map<Filters, bool> _filteredMeals = kInitialFilters;
-
-  void _showFavoriteMessage(String message) {
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-      ),
-    );
-  }
-
-  final List<Meal> favoriteMeals = [];
-  void setFavoriteMeals(Meal meal) {
-    final isFavorite = favoriteMeals.contains(meal);
-    if (isFavorite) {
-      setState(() {
-        favoriteMeals.remove(meal);
-        _showFavoriteMessage('Removed from favorites');
-      });
-    }
-    if (!isFavorite) {
-      setState(() {
-        favoriteMeals.add(meal);
-        _showFavoriteMessage('Marked as favorites');
-      });
-    }
-  }
 
   int _navItemIndex = 0;
 
@@ -64,7 +41,8 @@ class _TabScreenState extends State<TabScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final availableMeals = dummyMeals.where((meal) {
+    final meals = ref.watch(mealsprovider);
+    final availableMeals = meals.where((meal) {
       if (_filteredMeals[Filters.glutenFree]! && !meal.isGlutenFree) {
         return false;
       }
@@ -80,7 +58,7 @@ class _TabScreenState extends State<TabScreen> {
       return true;
     }).toList();
     Widget content = CategoriesScreen(
-      onSetFavoriteMeal: setFavoriteMeals,filteredMeals:availableMeals ,
+      filteredMeals: availableMeals,
     );
     String appBarTitle = 'Categories';
 
@@ -89,7 +67,7 @@ class _TabScreenState extends State<TabScreen> {
       if (identifier == "Filters") {
         final result = await Navigator.of(context).push<Map<Filters, bool>>(
           MaterialPageRoute(
-            builder: (ctx) =>  FilterScreen(currentFilters: _filteredMeals),
+            builder: (ctx) => FilterScreen(currentFilters: _filteredMeals),
           ),
         );
         setState(() {
@@ -99,10 +77,10 @@ class _TabScreenState extends State<TabScreen> {
     }
 
     if (_navItemIndex == 1) {
+      final favoriteMeals = ref.watch(favoriteMealProvider);
       appBarTitle = 'Favorites';
       content = MealsScreen(
         meals: favoriteMeals,
-        onSetFavorites: setFavoriteMeals,
       );
     }
     return Scaffold(
@@ -116,11 +94,11 @@ class _TabScreenState extends State<TabScreen> {
           currentIndex: _navItemIndex,
           items: const [
             BottomNavigationBarItem(
-              label: 'Categories',  
+              label: 'Categories',
               icon: Icon(Icons.set_meal),
             ),
             BottomNavigationBarItem(
-              label: 'Your Favorites', 
+              label: 'Your Favorites',
               icon: Icon(Icons.star),
             ),
           ]),

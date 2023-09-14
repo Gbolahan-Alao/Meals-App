@@ -4,16 +4,15 @@ import 'package:practice_meals_app/screens/meals_details_screen.dart';
 import 'package:practice_meals_app/widgets/meals_item.dart';
 // import 'package:practice_meals_app/models/category.dart';
 import 'package:practice_meals_app/models/meal.dart';
-
+ 
 class MealsScreen extends StatelessWidget {
-  const MealsScreen({super.key, this.title, required this.meals, required this.onSetFavorites});
+  const MealsScreen({super.key, this.title, required this.meals, });  
   final String? title;
   final List<Meal> meals;
-  final void Function (Meal meal) onSetFavorites;
   void selectMeal(BuildContext context, Meal meal) {
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (ctx) => MealsDetailsScreen(meal: meal, onSetFavoriteMeal: onSetFavorites,),
+        builder: (ctx) => MealsDetailsScreen(meal: meal),
       ),
     );
   }
@@ -22,7 +21,7 @@ class MealsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget content = ListView.builder(
       itemCount: meals.length,
-      itemBuilder: (context, index) => MealsItem(
+      itemBuilder: (context, index) => MealsItem( 
         meal: meals[index],
         onSelectMeal: (ctx) {
           selectMeal(context, meals[index]);
