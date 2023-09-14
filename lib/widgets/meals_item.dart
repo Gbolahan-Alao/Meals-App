@@ -11,6 +11,8 @@ class MealsItem extends StatelessWidget {
     required this.onSelectMeal,
   });
   final Meal meal;
+  final void Function(Meal meal) onSelectMeal;
+
   String get complexityName {
     return meal.complexity.name[0].toUpperCase() +
         meal.complexity.name.substring(1);
@@ -20,8 +22,6 @@ class MealsItem extends StatelessWidget {
     return meal.affordability.name[0].toUpperCase() +
         meal.affordability.name.substring(1);
   }
-
-  final void Function(Meal meal) onSelectMeal;
 
   // void selectMeal(BuildContext context, Meal meal) {
   //   Navigator.of(context).push(
@@ -39,7 +39,9 @@ class MealsItem extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       elevation: 2,
       child: InkWell(
-        onTap: (){onSelectMeal(meal);},
+        onTap: () {
+          onSelectMeal(meal);
+        },
         child: Stack(
           children: [
             FadeInImage(

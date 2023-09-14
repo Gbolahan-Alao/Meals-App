@@ -5,6 +5,7 @@ import 'package:practice_meals_app/models/meal.dart';
 import 'package:practice_meals_app/providers/favorite_meals_provider.dart';
 
 class MealsDetailsScreen extends ConsumerWidget {
+  
   const MealsDetailsScreen({
     super.key,
     required this.meal,
@@ -13,6 +14,9 @@ class MealsDetailsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final favoriteMeals = ref.watch(favoriteMealProvider);
+    final isFavorite = favoriteMeals.contains(meal);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(meal.title),
@@ -31,7 +35,7 @@ class MealsDetailsScreen extends ConsumerWidget {
                   ),
                 );
               },
-              icon: const Icon(Icons.star))
+              icon:  Icon(isFavorite ? Icons.star : Icons.star_border))
         ],
       ),
       body: Padding(

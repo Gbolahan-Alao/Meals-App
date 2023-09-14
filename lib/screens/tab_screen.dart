@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart'; 
 
 import 'package:practice_meals_app/screens/category_screen.dart';
 import 'package:practice_meals_app/screens/filters_sreen.dart';
@@ -7,15 +7,12 @@ import 'package:practice_meals_app/screens/meals_screen.dart';
 // import 'package:practice_meals_app/models/category.dart';
 
 import 'package:practice_meals_app/widgets/main_drawer.dart';
-import 'package:practice_meals_app/providers/meals_provider.dart';
+// import 'package:practice_meals_app/providers/meals_provider.dart';
 import 'package:practice_meals_app/providers/favorite_meals_provider.dart';
+import 'package:practice_meals_app/providers/filters_provider.dart';
 
-const kInitialFilters = {
-  Filters.glutenFree: false,
-  Filters.lactoseFree: false,
-  Filters.vegan: false,
-  Filters.vegetarian: false,
-};
+
+
 
 class TabScreen extends ConsumerStatefulWidget {
   const TabScreen({
@@ -29,7 +26,7 @@ class TabScreen extends ConsumerStatefulWidget {
 }
 
 class _TabScreenState extends ConsumerState<TabScreen> {
-  Map<Filters, bool> _filteredMeals = kInitialFilters;
+ 
 
   int _navItemIndex = 0;
 
@@ -41,38 +38,23 @@ class _TabScreenState extends ConsumerState<TabScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final meals = ref.watch(mealsprovider);
-    final availableMeals = meals.where((meal) {
-      if (_filteredMeals[Filters.glutenFree]! && !meal.isGlutenFree) {
-        return false;
-      }
-      if (_filteredMeals[Filters.lactoseFree]! && !meal.isLactoseFree) {
-        return false;
-      }
-      if (_filteredMeals[Filters.vegan]! && !meal.isVegan) {
-        return false;
-      }
-      if (_filteredMeals[Filters.vegetarian]! && !meal.isVegetarian) {
-        return false;
-      }
-      return true;
-    }).toList();
+
+    
+    final availableMeals =ref.watch(filteredMealsProvider);
     Widget content = CategoriesScreen(
       filteredMeals: availableMeals,
     );
     String appBarTitle = 'Categories';
-
+  
     void onSelectMainDrawerItem(String identifier) async {
       Navigator.of(context).pop();
-      if (identifier == "Filters") {
-        final result = await Navigator.of(context).push<Map<Filters, bool>>(
+      if (identifier == "Filters") {  
+       await Navigator.of(context).push<Map<Filters, bool>>(
           MaterialPageRoute(
-            builder: (ctx) => FilterScreen(currentFilters: _filteredMeals),
+            builder: (ctx) =>const FilterScreen(),  
           ),
         );
-        setState(() {
-          _filteredMeals = result ?? kInitialFilters;
-        });
+       
       }
     }
 
