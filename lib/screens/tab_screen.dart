@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart'; 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:practice_meals_app/screens/category_screen.dart';
 import 'package:practice_meals_app/screens/filters_sreen.dart';
@@ -10,9 +10,6 @@ import 'package:practice_meals_app/widgets/main_drawer.dart';
 // import 'package:practice_meals_app/providers/meals_provider.dart';
 import 'package:practice_meals_app/providers/favorite_meals_provider.dart';
 import 'package:practice_meals_app/providers/filters_provider.dart';
-
-
-
 
 class TabScreen extends ConsumerStatefulWidget {
   const TabScreen({
@@ -26,8 +23,6 @@ class TabScreen extends ConsumerStatefulWidget {
 }
 
 class _TabScreenState extends ConsumerState<TabScreen> {
- 
-
   int _navItemIndex = 0;
 
   void _selectTab(int index) {
@@ -38,23 +33,20 @@ class _TabScreenState extends ConsumerState<TabScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-    
-    final availableMeals =ref.watch(filteredMealsProvider);
+    final availableMeals = ref.watch(filteredMealsProvider);
     Widget content = CategoriesScreen(
       filteredMeals: availableMeals,
     );
     String appBarTitle = 'Categories';
-  
+
     void onSelectMainDrawerItem(String identifier) async {
       Navigator.of(context).pop();
-      if (identifier == "Filters") {  
-       await Navigator.of(context).push<Map<Filters, bool>>(
+      if (identifier == "Filters") {
+        await Navigator.of(context).push<Map<Filters, bool>>(
           MaterialPageRoute(
-            builder: (ctx) =>const FilterScreen(),  
+            builder: (ctx) => const FilterScreen(),
           ),
         );
-       
       }
     }
 

@@ -8,8 +8,8 @@ class FilterScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final activeFilters = ref.watch(filtersProvider);
-    return Scaffold(
+    final activeFilters = ref.watch(filtersProvider); 
+    return Scaffold( 
       appBar: AppBar(
         title: const Text('Your Filters'),
       ),
@@ -19,7 +19,7 @@ class FilterScreen extends ConsumerWidget {
             value: activeFilters[Filters.glutenFree]!,
             onChanged: (isChecked) {
               ref
-                  .read(filtersProvider.notifier)
+                  .read(filtersProvider.notifier) 
                   .setFilter(Filters.glutenFree, isChecked);
             },
             title: Text(
